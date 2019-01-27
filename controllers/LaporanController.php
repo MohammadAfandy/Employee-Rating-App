@@ -25,12 +25,11 @@ class LaporanController extends Controller
      */
     public function actionIndex()
     {
-        // $searchModel = new PenilaianSearch();
-        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);\
         $penilaian = Penilaian::find()->joinWith(['pegawai'])->all();
         $kriteria = Kriteria::find()->all();
 
         $nilai = [];
+        $max = [];
 
         foreach ($penilaian as $key => $pen) {
             $nilai[$pen->id_penilaian] = json_decode($pen->penilaian, true);
@@ -70,26 +69,16 @@ class LaporanController extends Controller
             $rank[$key_rank] = array_sum($rank[$key_rank]);
         }
 
-        // uasort($rank, function($a, $b) {
-        //     if ($a == $b) {
-        //         return 0;
-        //     }
-        //     return ($a > $b) ? -1 : 1;
-        // });
+        uasort($rank, function($a, $b) {
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a > $b) ? -1 : 1;
+        });
 
-        // rsort($rank);
-        // print_r($normalisasi[6][10]);
-        // print_r($rank);
-        // print_r($kriteria[0]->bobot);
-        // die();
+        $sort = array_keys($rank);
        
-        return $this->render('index', 
-            // 'searchModel' => $searchModel,
-            // 'dataProvider' => $dataProvider,
-            // 'penilaian' => $penilaian,
-            // 'kriteria' => $kriteria,
-            // 'nilai' => $nilai,
-            get_defined_vars()
+        return $this->render('index', get_defined_vars()
         );
     }
     

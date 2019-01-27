@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use app\models\Penilaian;
+
 /**
  * KriteriaController implements the CRUD actions for Kriteria model.
  */
@@ -73,6 +75,7 @@ class KriteriaController extends Controller
             $model->load(Yii::$app->request->post());
             
             if ($model->save()) {
+                $this->resetPenilaian();
                 $this->actionResetBobot();
             }
 
@@ -109,7 +112,8 @@ class KriteriaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        // $this->findModel($id)->delete();
+        $this->resetPenilaian();
         $this->actionResetBobot();
     }
 
@@ -163,5 +167,17 @@ class KriteriaController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
+
+    public function resetPenilaian()
+    {
+        $model = Penilaian::find()->all();
+
+        if ($model) {
+            foreach ($model as $key => $penilaian) {
+                $penilaian->delete();
+            }
+        }
+
     }
 }

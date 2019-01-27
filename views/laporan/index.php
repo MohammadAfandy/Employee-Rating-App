@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PenilaianSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -59,6 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'penilaian' => $penilaian,
         'kriteria' => $kriteria,
         'rank' => $rank,
+        'sort' => $sort,
     ]);
     ?>
 

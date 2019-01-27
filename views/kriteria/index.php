@@ -105,6 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]);
     ?>
+    
     <?= Html::submitButton('Set Kriteria', ['class' => 'btn btn-primary', 'id' => 'btn_set']); ?>
     <?= Html::a('Reset Bobot', ['reset-bobot'], ['class' => 'btn btn-danger', 'id' => 'btn_reset']); ?>
     </form>

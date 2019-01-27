@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 use app\components\Helpers;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PegawaiSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -52,4 +53,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <?php Pjax::end(); ?>
+
 </div>

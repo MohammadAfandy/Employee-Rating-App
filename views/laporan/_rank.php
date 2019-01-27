@@ -1,24 +1,28 @@
 <div class="panel-body">
     <fieldset class="fieldset">
         <legend>Ranking</legend>
-        <table class="table table-hover table-bordered">
+        <table class="table table-striped table-bordered">
             <thead>
-                <th>No</th>
                 <th>Nama Pegawai</th>
-                <th>Rank</th>
+                <th>Nilai</th>
+                <th>Peringkat</th>
             </thead>
                 
             <?php if (!empty($rank) && is_array($rank)): ?>
-                
-                <?php $no = 0; ?>
+                <?php
+                usort($penilaian, function ($a, $b) use ($sort) {
+                    $pos_a = array_search($a['id_penilaian'], $sort);
+                    $pos_b = array_search($b['id_penilaian'], $sort);
+                    return $pos_a - $pos_b;
+                });
+                ?>
                 <?php foreach($penilaian as $key => $pen): ?>
-                <?php //foreach($rank as $key => $r): ?>
                     
                     <tbody>
                         <tr>
-                            <td><?= $key + 1 ?></td>
-                            <td><?= $pen->pegawai->id_pegawai ?></td>
+                            <td><?= $pen->pegawai->nama_pegawai ?></td>
                             <td><?= $rank[$pen->id_penilaian]; ?> </td>
+                            <td><?= $key + 1 ?></td>
                         </tr>
                     </tbody>
                 
