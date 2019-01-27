@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]);
     ?>
     <?= Html::submitButton('Set Kriteria', ['class' => 'btn btn-primary', 'id' => 'btn_set']); ?>
-    <?= Html::a('Reset Kriteria', ['reset-kriteria'], ['class' => 'btn btn-danger', 'id' => 'btn_reset']); ?>
+    <?= Html::a('Reset Bobot', ['reset-bobot'], ['class' => 'btn btn-danger', 'id' => 'btn_reset']); ?>
     </form>
     <div id="error_bobot" style="color: red;"></div>
 </div>
@@ -134,6 +134,12 @@ $script = <<< JS
                 return true;
             } else {
                 $("#error_bobot").html("Total Bobot Harus 100 %. Saat Ini Baru " + total + " %");
+                return false;
+            }
+        });
+
+        $("#btn_reset").on("click", function() {
+            if (!confirm("Apakah Anda Yakin Ingin Mereset Bobot ?")) {
                 return false;
             }
         });

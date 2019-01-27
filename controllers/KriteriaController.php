@@ -146,4 +146,18 @@ class KriteriaController extends Controller
 
         return $this->redirect(['index']);
     }
+
+    public function actionResetBobot()
+    {
+        $model = Kriteria::find()->all();
+
+        if ($model) {
+            foreach ($model as $key => $kriteria) {
+                $kriteria->bobot = 0;
+                $kriteria->save();
+            }
+        }
+
+        return $this->redirect(['index']);
+    }
 }
