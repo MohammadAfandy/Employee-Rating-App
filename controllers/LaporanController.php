@@ -31,8 +31,6 @@ class LaporanController extends Controller
         $kriteria = Kriteria::find()->all();
 
         $nilai = [];
-        $max = [];
-        $normalisasi = [];
 
         foreach ($penilaian as $key => $pen) {
             $nilai[$pen->id_penilaian] = json_decode($pen->penilaian, true);
@@ -53,15 +51,36 @@ class LaporanController extends Controller
 
         $normalisasi = $nilai;
 
-        foreach ($normalisasi as $key_normalisasi => $norm) {
-            foreach ($norm as $k => $n) {
+
+        foreach ($normalisasi as $key_normalisasi => $norm_value) {
+            foreach ($norm_value as $k => $n) {
                 $normalisasi[$key_normalisasi][$k] = round($normalisasi[$key_normalisasi][$k] / $max[$k], 3);
             }
         }
 
+        $rank = $normalisasi;
+
+        foreach ($rank as $key_rank => $rank_value) {
+            foreach ($rank_value as $k => $n) {
+                $i = 0;
+                $rank[$key_rank][$k] = $rank[$key_rank][$k] * $kriteria[$i]->bobot;
+                $i++;
+            }
+            
+            $rank[$key_rank] = array_sum($rank[$key_rank]);
+        }
+
+        // uasort($rank, function($a, $b) {
+        //     if ($a == $b) {
+        //         return 0;
+        //     }
+        //     return ($a > $b) ? -1 : 1;
+        // });
+
+        // rsort($rank);
         // print_r($normalisasi[6][10]);
-        // print_r($max[10]);
-        // print_r($normalisasi);
+        // print_r($rank);
+        // print_r($kriteria[0]->bobot);
         // die();
        
         return $this->render('index', 
@@ -73,5 +92,5 @@ class LaporanController extends Controller
             get_defined_vars()
         );
     }
-
+    
 }

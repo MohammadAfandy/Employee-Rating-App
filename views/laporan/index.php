@@ -54,4 +54,12 @@ $this->params['breadcrumbs'][] = $this->title;
     ]);
     ?>
 
+    <?php
+    echo $this->render('_rank', [
+        'penilaian' => $penilaian,
+        'kriteria' => $kriteria,
+        'rank' => $rank,
+    ]);
+    ?>
+
 </div>
