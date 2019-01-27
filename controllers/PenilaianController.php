@@ -120,12 +120,23 @@ class PenilaianController extends Controller
     {
         $model = $this->findModel($id);
 
+        $data_pegawai_exist = $model->find()->select(['id_pegawai'])->column();
+        $pegawais = Pegawai::find()->where(['NOT IN', 'id_pegawai', $data_pegawai_exist])->all();
+        $kriteria = Kriteria::find()->all();
+        $data_pegawai = [];
+
+        foreach ($pegawais as $key => $pegawai) {
+            $data_pegawai[$pegawai->id_pegawai] = $pegawai->nip . ' | ' . $pegawai->nama_pegawai;
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_penilaian]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'data_pegawai' => $data_pegawai,
+            'kriteria' => $kriteria,
         ]);
     }
 

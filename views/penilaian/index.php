@@ -60,6 +60,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php foreach ($kriteria as $kri): ?>
                             <td><?= $nilai[$pen->id_penilaian][$kri->id_kriteria]; ?></td>
                         <?php endforeach; ?>
+
+                        <td>
+                            <?= Html::a('Update', ['update', 'id' => $pen->id_penilaian], ['class' => 'btn btn-primary btn-xs']); ?>
+                            <?= Html::a('Delete', ['delete', 'id' => $pen->id_penilaian], [
+                                'class' => 'btn btn-danger btn-xs',
+                                'data-confirm' => 'Apakah Anda Yakin Ingin Menghapus Data ?',
+                                'data-method' => 'post',
+                            ]); ?>
+                        </td>
                     </tr>
                 </tbody>
             

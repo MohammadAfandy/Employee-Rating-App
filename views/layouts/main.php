@@ -42,6 +42,7 @@ AppAsset::register($this);
             ['label' => 'Pegawai', 'url' => ['/pegawai']],
             ['label' => 'Kriteria', 'url' => ['/kriteria']],
             ['label' => 'Penilaian', 'url' => ['/penilaian']],
+            ['label' => 'Laporan', 'url' => ['/laporan']],
         ],
     ]);
     echo Nav::widget([
