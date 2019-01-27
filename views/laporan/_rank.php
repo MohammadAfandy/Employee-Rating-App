@@ -8,7 +8,7 @@
                 <th>Peringkat</th>
             </thead>
                 
-            <?php if (!empty($rank) && is_array($rank)): ?>
+            <?php if (!empty($penilaian) && is_array($penilaian)): ?>
                 <?php
                 usort($penilaian, function ($a, $b) use ($sort) {
                     $pos_a = array_search($a['id_penilaian'], $sort);

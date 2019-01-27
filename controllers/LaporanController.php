@@ -58,7 +58,6 @@ class LaporanController extends Controller
         }
 
         $rank = $normalisasi;
-        // print_r($rank);die();
 
         foreach ($rank as $key_rank => $rank_value) {
             $i = 0;

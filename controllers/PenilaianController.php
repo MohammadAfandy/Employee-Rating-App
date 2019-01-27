@@ -94,7 +94,7 @@ class PenilaianController extends Controller
         if (!empty($post_data)) {
             $model->load($post_data);
             $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);
-            // print_r($model->attributes);die();
+            
             if ($model->validate()) {
                 $model->save();
                 return $this->redirect(['index']);

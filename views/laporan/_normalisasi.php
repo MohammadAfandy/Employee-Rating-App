@@ -10,7 +10,7 @@
                     <th><?= $kri->nama_kriteria ?></th>
                 <?php endforeach; ?>
     
-                </thead>
+            </thead>
                 
             <?php if (!empty($penilaian) && is_array($penilaian)): ?>
                 
@@ -25,8 +25,8 @@
                                 <td><?= $normalisasi[$pen->id_penilaian][$kri->id_kriteria]; ?></td>
                             <?php endforeach; ?>
     
-                            </tr>
-                        </tbody>
+                        </tr>
+                    </tbody>
                 
                 <?php endforeach; ?>
             

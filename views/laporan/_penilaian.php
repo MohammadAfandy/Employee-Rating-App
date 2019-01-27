@@ -10,7 +10,7 @@
                     <th><?= $kri->nama_kriteria ?></th>
                 <?php endforeach; ?>
     
-                </thead>
+            </thead>
                 
             <?php if (!empty($penilaian) && is_array($penilaian)): ?>
                 
