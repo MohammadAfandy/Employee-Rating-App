@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 use app\models\Penilaian;
+use app\models\PenilaianHapus;
 
 /**
  * KriteriaController implements the CRUD actions for Kriteria model.
@@ -50,19 +51,6 @@ class KriteriaController extends Controller
     }
 
     /**
-     * Displays a single Kriteria model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Kriteria model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -75,32 +63,12 @@ class KriteriaController extends Controller
             $model->load(Yii::$app->request->post());
             
             if ($model->save()) {
-                $this->resetPenilaian();
+                $this->deletePenilaian();
                 $this->actionResetBobot();
             }
 
         }
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Updates an existing Kriteria model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_kriteria]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -112,8 +80,8 @@ class KriteriaController extends Controller
      */
     public function actionDelete($id)
     {
-        // $this->findModel($id)->delete();
-        $this->resetPenilaian();
+        $this->findModel($id)->delete();
+        $this->deletePenilaian();
         $this->actionResetBobot();
     }
 
@@ -138,7 +106,7 @@ class KriteriaController extends Controller
         $post_data = Yii::$app->request->post();
 
         if (!empty($post_data['Kriteria'])) {
-            // print_r($post_data);die();
+            
             foreach ($post_data['Kriteria'] as $key => $post) {
                 $model = $this->findModel($key);
                 $model->attributes = $post;
@@ -169,14 +137,22 @@ class KriteriaController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function resetPenilaian()
+    public function deletePenilaian()
     {
-        $model = Penilaian::find()->all();
+        $model_penilaian = Penilaian::find()->all();
 
-        if ($model) {
-            foreach ($model as $key => $penilaian) {
-                $penilaian->delete();
+        if ($model_penilaian) {
+            
+            foreach ($model_penilaian as $key => $penilaian) {
+                $model_penilaian_hapus = new PenilaianHapus;
+                $model_penilaian_hapus->attributes = $penilaian->attributes;
+
+                if ($model_penilaian_hapus->save()) {
+                    $penilaian->delete();
+                }
+
             }
+
         }
 
     }

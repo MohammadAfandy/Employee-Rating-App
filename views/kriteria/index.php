@@ -44,6 +44,9 @@ $this->params['breadcrumbs'][] = $this->title;
         Modal::end();
         ?>
     </p>
+    <p>
+        <span style="color: red"><strong>*Menambah dan Menghapus Kriteria Akan Menghapus Data Penilaian dan Mereset Bobot Kriteria</strong></span>
+    </p>
 
     <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
         <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
@@ -76,6 +79,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             [
+                'header' => 'Bobot' . '<span class="pull-right">' . 
+                    Html::button('Edit All', [
+                        'class' => 'btn btn-success btn-xs',
+                        'id' => 'btn_edit_all_bobot',
+                    ]) . ' ' .
+                    Html::button('Cancel All', [
+                        'class' => 'btn btn-danger btn-xs',
+                        'id' => 'btn_cancel_all_bobot',
+                    ])
+                ,
                 'attribute' => 'bobot',
                 'value' => function($model) {
                     $bobot = Html::textInput('Kriteria[' .$model->id_kriteria. '][bobot]', $model->bobot * 100, [
@@ -100,12 +113,12 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Aksi',
-                'template' => '{update} {delete}',
+                'template' => '{delete}',
             ],
         ],
     ]);
     ?>
-    
+
     <?= Html::submitButton('Set Kriteria', ['class' => 'btn btn-primary', 'id' => 'btn_set']); ?>
     <?= Html::a('Reset Bobot', ['reset-bobot'], ['class' => 'btn btn-danger', 'id' => 'btn_reset']); ?>
     </form>
@@ -142,6 +155,18 @@ $script = <<< JS
             let input = $(".bobot_kriteria[data-id="+id+"]");
 
             input.attr("disabled", true).css("border-bottom", "2px solid #C0C0C0").val(input.data("oldval"));
+        });
+
+        $("#btn_edit_all_bobot").on("click", function() {
+            $(".bobot_kriteria").each(function() {
+                $(this).removeAttr("disabled").css("border-bottom", "2px solid #5cb85c");
+            });
+        });
+
+        $("#btn_cancel_all_bobot").on("click", function() {
+            $(".bobot_kriteria").each(function() {
+                $(this).attr("disabled", true).css("border-bottom", "2px solid #C0C0C0").val($(this).data("oldval"));
+            });
         });
 
         $("#btn_set").on("click", function() {

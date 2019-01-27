@@ -1,7 +1,7 @@
 <div class="panel-body">
     <fieldset class="fieldset">
         <legend>Normalisasi</legend>
-        <table class="table table-hover table-bordered">
+        <table class="table table-striped table-bordered">
             <thead>
                 <th>No</th>
                 <th>Nama Pegawai</th>

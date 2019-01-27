@@ -58,10 +58,11 @@ class LaporanController extends Controller
         }
 
         $rank = $normalisasi;
+        // print_r($rank);die();
 
         foreach ($rank as $key_rank => $rank_value) {
-            foreach ($rank_value as $k => $n) {
-                $i = 0;
+            $i = 0;
+            foreach ($rank_value as $k => $r) {
                 $rank[$key_rank][$k] = $rank[$key_rank][$k] * $kriteria[$i]->bobot;
                 $i++;
             }
@@ -78,8 +79,7 @@ class LaporanController extends Controller
 
         $sort = array_keys($rank);
        
-        return $this->render('index', get_defined_vars()
-        );
+        return $this->render('index', get_defined_vars());
     }
     
 }
