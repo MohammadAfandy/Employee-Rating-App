@@ -82,9 +82,4 @@ class Pegawai extends \yii\db\ActiveRecord
             ],
         ];
      }
-
-    //  public function getPenilaian()
-    // {
-    //     return $this->hasOne(Penilaian::className(),['id_pegawai'=>'id_pegawai']);
-    // }
 }

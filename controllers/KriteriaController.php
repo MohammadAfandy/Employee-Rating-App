@@ -124,4 +124,26 @@ class KriteriaController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionSetKriteria()
+    {
+        $post_data = Yii::$app->request->post();
+
+        if (!empty($post_data['Kriteria'])) {
+            // print_r($post_data);die();
+            foreach ($post_data['Kriteria'] as $key => $post) {
+                $model = $this->findModel($key);
+                $model->attributes = $post;
+
+                if (!empty($post['bobot'])) {
+                    $model->bobot = $post['bobot'] / 100;
+                }
+            
+                $model->save();
+            }
+
+        }
+
+        return $this->redirect(['index']);
+    }
 }

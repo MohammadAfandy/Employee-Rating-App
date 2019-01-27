@@ -26,10 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
-        <?= Html::a('Create Kriteria', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tambah Kriteria', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
+        <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
+    <?php
+    echo GridView::widget([
         'dataProvider' => $dataProvider,
         // 'filterModel' => $searchModel,
         'columns' => [
@@ -38,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'nama_kriteria',
                 'value' => function($model) {
-                    $nama = Html::textInput('Kriteria[' .$model->id_kriteria. '][nama_kriteria]', $model->nama_kriteria, [
+                    $nama = Html::textInput('Kriteria[' .$model->id_kriteria. '][nama_kriteria]', ucwords($model->nama_kriteria), [
                         'class' => 'nama_kriteria',
                         'disabled' => 'disabled',
                         'data-id' => $model->id_kriteria,
@@ -80,7 +83,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]);
+    ?>
+    <?= Html::submitButton('Set Kriteria', ['class' => 'btn btn-primary', 'id' => 'btn_set']); ?>
+    <?= Html::a('Reset Kriteria', ['reset-kriteria'], ['class' => 'btn btn-danger', 'id' => 'btn_reset']); ?>
+    </form>
+    <div id="error_bobot" style="color: red;"></div>
 </div>
 
 <?php
@@ -113,6 +121,21 @@ $script = <<< JS
             let input = $(".bobot_kriteria[data-id="+id+"]");
 
             input.attr("disabled", true).css("border-bottom", "2px solid #C0C0C0").val(input.data("oldval"));
+        });
+
+        $("#btn_set").on("click", function() {
+            let total = 0;
+
+            $(".bobot_kriteria").each(function() {
+                total += parseInt(this.value);
+            });
+
+            if (total == 100) {
+                return true;
+            } else {
+                $("#error_bobot").html("Total Bobot Harus 100 %. Saat Ini Baru " + total + " %");
+                return false;
+            }
         });
 
     });
