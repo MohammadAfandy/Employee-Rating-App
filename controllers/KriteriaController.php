@@ -83,6 +83,7 @@ class KriteriaController extends Controller
         $this->findModel($id)->delete();
         $this->deletePenilaian();
         $this->actionResetBobot();
+        return $this->redirect(['index']);
     }
 
     /**
@@ -106,7 +107,7 @@ class KriteriaController extends Controller
         $post_data = Yii::$app->request->post();
 
         if (!empty($post_data['Kriteria'])) {
-            
+
             foreach ($post_data['Kriteria'] as $key => $post) {
                 $model = $this->findModel($key);
                 $model->attributes = $post;
@@ -147,6 +148,20 @@ class KriteriaController extends Controller
                 $model_penilaian_hapus = new PenilaianHapus;
                 $model_penilaian_hapus->attributes = $penilaian->attributes;
 
+                if (!empty($penilaian->penilaian)) {
+                    $nilai_kriteria = json_decode($penilaian->penilaian, true);
+
+                    foreach ($nilai_kriteria as $id_kriteria => $nilai) {
+                        $nama_kriteria = $this->getNamaKriteria($id_kriteria);
+                        $nilai_kriteria[$nama_kriteria] = $nilai_kriteria[$id_kriteria];
+                        unset($nilai_kriteria[$id_kriteria]);
+                    }
+
+                    $nilai_kriteria = json_encode($nilai_kriteria);
+
+                    $model_penilaian_hapus->penilaian = $nilai_kriteria;
+                }
+
                 if ($model_penilaian_hapus->save()) {
                     $penilaian->delete();
                 }
@@ -155,5 +170,16 @@ class KriteriaController extends Controller
 
         }
 
+    }
+
+    public function getNamaKriteria($id_kriteria)
+    {    
+        $model = $this->findModel($id_kriteria);
+
+        if ($model) {
+            return $model->nama_kriteria;
+        } else {
+            return '';
+        }
     }
 }

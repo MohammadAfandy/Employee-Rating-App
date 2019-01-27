@@ -1,7 +1,7 @@
 <div class="panel-body">
     <fieldset class="fieldset">
         <legend>Ranking</legend>
-        <table class="table table-striped table-bordered">
+        <table class="table table-bordered">
             <thead>
                 <th>Nama Pegawai</th>
                 <th>Nilai</th>
