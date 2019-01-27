@@ -10,14 +10,25 @@ use yii\widgets\ActiveForm;
 
 <div class="kriteria-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+	<?php if ($model->isNewRecord): ?>
+		<span style="color: red"><strong>*Menambah Data Akan Mereset Bobot Kriteria</strong></span>
+	<?php endif; ?>
+
+    <?php
+    $form = ActiveForm::begin([
+    	'action' => $model->isNewRecord ? ['create'] : ['update'],
+    ]);
+    ?>
 
     <?= $form->field($model, 'nama_kriteria')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'bobot')->textInput() ?>
-
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?php
+        echo Html::submitButton($model->isNewRecord ? 'Tambah' : 'Simpan', [
+        	'class' => 'btn btn-success',
+        	'id' => $model->isNewRecord ? 'btn_tambah' : 'btn_update',
+        ]);
+        ?>
     </div>
 
     <?php ActiveForm::end(); ?>

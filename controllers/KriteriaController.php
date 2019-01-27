@@ -35,11 +35,14 @@ class KriteriaController extends Controller
      */
     public function actionIndex()
     {
+        $model = new Kriteria();
+
         $searchModel = new KriteriaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'model' => $model,
+            'dataProvider' => $dataProvider,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -66,13 +69,15 @@ class KriteriaController extends Controller
     {
         $model = new Kriteria();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_kriteria]);
-        }
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+            
+            if ($model->save()) {
+                $this->actionResetBobot();
+            }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        }
+        return $this->redirect(['index']);
     }
 
     /**
@@ -105,8 +110,7 @@ class KriteriaController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $this->actionResetBobot();
     }
 
     /**

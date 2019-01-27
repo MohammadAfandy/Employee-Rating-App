@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use yii\bootstrap\Modal;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\KriteriaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -26,7 +28,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
-        <?= Html::a('Tambah Kriteria', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php
+        Modal::begin([
+            'header' => '<h2>Hello world</h2>',
+            'toggleButton' => [
+                'label' => 'Tambah Kriteria',
+                'class' => 'btn btn-success',
+            ],
+        ]);
+
+        echo $this->render('_form', [
+            'model' => $model,
+        ]);
+
+        Modal::end();
+        ?>
     </p>
 
     <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
@@ -81,7 +97,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Aksi',
+                'template' => '{update} {delete}',
+            ],
         ],
     ]);
     ?>

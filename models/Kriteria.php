@@ -27,7 +27,7 @@ class Kriteria extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama_kriteria', 'bobot'], 'required'],
+            [['nama_kriteria'], 'required'],
             [['nama_kriteria'], 'unique'],
             [['bobot'], 'number'],
             [['nama_kriteria'], 'string', 'max' => 100],

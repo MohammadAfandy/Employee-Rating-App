@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             <tbody>
                 <tr>
-                    <td colspan="5">Data Tidak Ditemukan</td>
+                    <td colspan="<?= count($kriteria) + 3 ?>">Data Tidak Ditemukan</td>
                 </tr>
             </tbody>
         
