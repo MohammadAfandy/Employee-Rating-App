@@ -50,79 +50,97 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
         <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
-    <?php
-    echo GridView::widget([
-        'dataProvider' => $dataProvider,
-        // 'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            [
-                'attribute' => 'nama_kriteria',
-                'value' => function($model) {
-                    $nama = Html::textInput('Kriteria[' .$model->id_kriteria. '][nama_kriteria]', ucwords($model->nama_kriteria), [
-                        'class' => 'nama_kriteria',
-                        'disabled' => 'disabled',
-                        'data-id' => $model->id_kriteria,
-                        'data-oldval' => $model->nama_kriteria,
-                    ]);
-                    $edit = Html::button('Edit', [
-                        'class' => 'btn btn-success btn-xs btn_edit_nama',
-                        'data-id' => $model->id_kriteria,
-                    ]);
-                    $cancel = Html::button('X', [
-                        'class' => 'btn btn-danger btn-xs btn_cancel_nama',
-                        'data-id' => $model->id_kriteria,
-                    ]);
-                    return $nama . '<span class="pull-right">' . $edit . ' '. $cancel;
-                },
-                'format' => 'raw',
+        <div style="color: red; min-height: 20px;">
+            <strong><span id="error_bobot"></span></strong>
+        </div>
+        <?php
+        $tabindex = 1;
+        echo GridView::widget([
+            'dataProvider' => $dataProvider,
+            // 'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+    
+                [
+                    'header' => 'Nama Kriteria' . '<span class="pull-right">' . 
+                        Html::button('Edit All', [
+                            'class' => 'btn btn-success btn-xs',
+                            'id' => 'btn_edit_all_nama',
+                        ]) . ' ' .
+                        Html::button('Cancel All', [
+                            'class' => 'btn btn-danger btn-xs',
+                            'id' => 'btn_cancel_all_nama',
+                        ])
+                    ,
+                    'attribute' => 'nama_kriteria',
+                    'value' => function($model) use (&$tabindex) {
+                        $nama = Html::textInput('Kriteria[' .$model->id_kriteria. '][nama_kriteria]', ucwords($model->nama_kriteria), [
+                            'class' => 'nama_kriteria',
+                            'disabled' => 'disabled',
+                            'tabindex' => $tabindex,
+                            'data-id' => $model->id_kriteria,
+                            'data-oldval' => $model->nama_kriteria,
+                        ]);
+                        $edit = Html::button('Edit', [
+                            'class' => 'btn btn-success btn-xs btn_edit_nama',
+                            'data-id' => $model->id_kriteria,
+                        ]);
+                        $cancel = Html::button('X', [
+                            'class' => 'btn btn-danger btn-xs btn_cancel_nama',
+                            'data-id' => $model->id_kriteria,
+                        ]);
+                        $tabindex++;
+                        return $nama . '<span class="pull-right">' . $edit . ' '. $cancel;
+                    },
+                    'format' => 'raw',
+                ],
+                [
+                    'header' => 'Bobot' . '<span class="pull-right">' . 
+                        Html::button('Edit All', [
+                            'class' => 'btn btn-success btn-xs',
+                            'id' => 'btn_edit_all_bobot',
+                        ]) . ' ' .
+                        Html::button('Cancel All', [
+                            'class' => 'btn btn-danger btn-xs',
+                            'id' => 'btn_cancel_all_bobot',
+                        ])
+                    ,
+                    'attribute' => 'bobot',
+                    'value' => function($model) use (&$tabindex) {
+                        $bobot = Html::textInput('Kriteria[' .$model->id_kriteria. '][bobot]', $model->bobot * 100, [
+                            'type' => 'number',
+                            'class' => 'bobot_kriteria',
+                            'disabled' => 'disabled',
+                            'tabindex' => $tabindex,
+                            'data-id' => $model->id_kriteria,
+                            'data-oldval' => $model->bobot * 100,
+                        ]);
+                        $edit = Html::button('Edit', [
+                            'class' => 'btn btn-success btn-xs btn_edit_bobot',
+                            'data-id' => $model->id_kriteria,
+                        ]);
+                        $cancel = Html::button('X', [
+                            'class' => 'btn btn-danger btn-xs btn_cancel_bobot',
+                            'data-id' => $model->id_kriteria,
+                        ]);
+                        $tabindex++;
+                        return $bobot . ' %<span class="pull-right">' . $edit . ' '. $cancel;
+                    },
+                    'format' => 'raw',
+                ],
+    
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'header' => 'Aksi',
+                    'template' => '{delete}',
+                ],
             ],
-            [
-                'header' => 'Bobot' . '<span class="pull-right">' . 
-                    Html::button('Edit All', [
-                        'class' => 'btn btn-success btn-xs',
-                        'id' => 'btn_edit_all_bobot',
-                    ]) . ' ' .
-                    Html::button('Cancel All', [
-                        'class' => 'btn btn-danger btn-xs',
-                        'id' => 'btn_cancel_all_bobot',
-                    ])
-                ,
-                'attribute' => 'bobot',
-                'value' => function($model) {
-                    $bobot = Html::textInput('Kriteria[' .$model->id_kriteria. '][bobot]', $model->bobot * 100, [
-                        'class' => 'bobot_kriteria',
-                        'disabled' => 'disabled',
-                        'data-id' => $model->id_kriteria,
-                        'data-oldval' => $model->bobot * 100,
-                    ]);
-                    $edit = Html::button('Edit', [
-                        'class' => 'btn btn-success btn-xs btn_edit_bobot',
-                        'data-id' => $model->id_kriteria,
-                    ]);
-                    $cancel = Html::button('X', [
-                        'class' => 'btn btn-danger btn-xs btn_cancel_bobot',
-                        'data-id' => $model->id_kriteria,
-                    ]);
-                    return $bobot . ' %<span class="pull-right">' . $edit . ' '. $cancel;
-                },
-                'format' => 'raw',
-            ],
+        ]);
+        ?>
 
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'header' => 'Aksi',
-                'template' => '{delete}',
-            ],
-        ],
-    ]);
-    ?>
-
-    <?= Html::submitButton('Set Kriteria', ['class' => 'btn btn-primary', 'id' => 'btn_set']); ?>
-    <?= Html::a('Reset Bobot', ['reset-bobot'], ['class' => 'btn btn-danger', 'id' => 'btn_reset']); ?>
+        <?= Html::submitButton('Set Kriteria', ['class' => 'btn btn-primary', 'id' => 'btn_set']); ?>
+        <?= Html::a('Reset Bobot', ['reset-bobot'], ['class' => 'btn btn-danger', 'id' => 'btn_reset']); ?>
     </form>
-    <div id="error_bobot" style="color: red;"></div>
 </div>
 
 <?php
@@ -157,6 +175,18 @@ $script = <<< JS
             input.attr("disabled", true).css("border-bottom", "2px solid #C0C0C0").val(input.data("oldval"));
         });
 
+        $("#btn_edit_all_nama").on("click", function() {
+            $(".nama_kriteria").each(function() {
+                $(this).removeAttr("disabled").css("border-bottom", "2px solid #5cb85c");
+            });
+        });
+
+        $("#btn_cancel_all_nama").on("click", function() {
+            $(".nama_kriteria").each(function() {
+                $(this).attr("disabled", true).css("border-bottom", "2px solid #C0C0C0").val($(this).data("oldval"));
+            });
+        });
+
         $("#btn_edit_all_bobot").on("click", function() {
             $(".bobot_kriteria").each(function() {
                 $(this).removeAttr("disabled").css("border-bottom", "2px solid #5cb85c");
@@ -169,6 +199,41 @@ $script = <<< JS
             });
         });
 
+        $(document).on("keyup", ".bobot_kriteria", function() {
+            let new_value = $(this).val().replace(/\D/g, "");
+            this.value = new_value;
+
+            let input = parseInt($(this).val());
+            let max = parseInt($(this).attr("data-max"));
+
+            if (input > max) {
+                this.value = max;
+            }
+
+            let total = 0;
+
+            $(".bobot_kriteria").each(function() {
+                total += parseInt(this.value);
+            });
+
+            if (total == 100) {
+                $("#error_bobot").html("Total Bobot Sudah 100 %");
+            } else {
+                $("#error_bobot").empty();
+            }
+
+        });
+
+        $(document).on("focus", ".bobot_kriteria", function() {
+            let total = 0;
+            $(".bobot_kriteria").each(function() {
+                total += parseInt(this.value);
+            });
+
+            $(this).attr("data-max", (100 - total) + parseInt(this.value));
+            
+        });
+
         $("#btn_set").on("click", function() {
             let total = 0;
 
@@ -179,7 +244,7 @@ $script = <<< JS
             if (total == 100) {
                 return true;
             } else {
-                $("#error_bobot").html("Total Bobot Harus 100 %. Saat Ini Baru " + total + " %");
+                $("#error_bobot").html("Total Bobot Harus 100 %. Total Saat Ini " + total + " %");
                 return false;
             }
         });

@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php Pjax::begin([
+    <?php
+    Pjax::begin([
         'id' => 'pegawai-index',
         'enablePushState' => false, // to disable push state
         'enableReplaceState' => false, // to disable replace state
@@ -26,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
     <p>
-        <?= Html::a('Create Pegawai', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tambah Pegawai', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -49,7 +50,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->jk == 'L' ? 'Laki-Laki' : 'Perempuan';
                 },
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Aksi',
+                'template' => '{update} {delete}',
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

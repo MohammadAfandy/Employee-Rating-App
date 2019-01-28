@@ -8,62 +8,106 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="penilaian-form">
+<div class="panel-body">
+    <div class="penilaian-form">
 
-    <?php
-    $form = ActiveForm::begin([
-        'options' => [
-            'enctype' => 'multipart/form-data',
-        ],
-        'layout' => 'horizontal',
-    ]);
-    ?>
-
-    <?php
-    if ($model->isNewRecord) {
-        echo $form->field($model, 'id_pegawai')->dropDownList($data_pegawai, [
-            'prompt' => '--PILIH-',
+        <?php
+        $form = ActiveForm::begin([
+            'options' => [
+                'enctype' => 'multipart/form-data',
+            ],
+            'layout' => 'horizontal',
         ]);
-    } else {
-        echo $form->field($model, 'id_pegawai')->begin();
+        ?>
+
+        <?php
+        if ($model->isNewRecord) {
+            echo $form->field($model, 'id_pegawai')->dropDownList($data_pegawai, [
+                'prompt' => '--PILIH-',
+            ]);
+        } else {
+            echo $form->field($model, 'id_pegawai')->begin();
             echo Html::activeHiddenInput($model, 'id_pegawai');
-        echo $form->field($model, 'id_pegawai')->end();
-        
-        echo $form->field($model, 'id_pegawai')->dropDownList($data_pegawai, [
-            'disabled' => true,
-        ]);
-    }
-    ?>
+            echo $form->field($model, 'id_pegawai')->end();
+            
+            echo $form->field($model, 'id_pegawai')->dropDownList($data_pegawai, [
+                'disabled' => true,
+            ]);
+        }
+        ?>
 
-    <?php foreach ($kriteria as $key => $kri): ?>
+        <?php foreach ($kriteria as $key => $kri): ?>
+            <div class="form-group">
+                <label class="control-label col-sm-3"><?= $kri->nama_kriteria; ?></label>
+                <div class="col-sm-6">
+                    <?php
+                    echo Html::textInput(
+                        'Penilaian[penilaian][' . $kri->id_kriteria . ']',
+                        $model->isNewRecord ? '' : $data_penilaian[$kri->id_kriteria],
+                        [
+                            'type' => 'number',
+                            'class' => 'form-control field_penilaian',
+                            'data-id' => $kri->id_kriteria,
+                            'data-nama' => $kri->nama_kriteria,
+                            'style' => [
+                                'width' => '100px',
+                            ],
+                        ]
+                    );
+                    ?>
+                </div>
+                <div class="col-sm-offset-3 col-sm-6" id="error_<?= $kri->id_kriteria; ?>" style="color: red; font-size: 0.9em;"></div>
+            </div>
+
+        <?php endforeach; ?>
+
         <div class="form-group">
-            <label class="control-label col-sm-3"><?= $kri->nama_kriteria; ?></label>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
                 <?php
-                echo Html::textInput(
-                    'Penilaian[penilaian][' . $kri->id_kriteria . ']',
-                    $model->isNewRecord ? '' : $data_penilaian[$kri->id_kriteria],
-                    [
-                        'type' => 'number',
-                        'class' => 'form-control',
-                        'max' => 100,
-                        'style' => [
-                            'width' => '100px',
-                        ],
-                    ]
-                );
+                echo Html::submitButton($model->isNewRecord ? 'Tambah' : 'Update', [
+                    'class' => 'btn btn-success',
+                    'id' => 'btn_submit',
+                ]);
                 ?>
             </div>
         </div>
 
-    <?php endforeach; ?>
+        <?php ActiveForm::end(); ?>
 
-    <div class="form-group">
-        <div class="col-sm-3">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>
+
+<?php
+$script = <<< JS
+    $(document).ready(function() {
+        
+        $(document).on("keyup", ".field_penilaian", function() {
+            let new_value = $(this).val().replace(/\D/g, "");
+            this.value = new_value;
+            
+            if (this.value > 100) {
+                this.value = 100;
+                } else if (this.value < 0) {
+                    this.value = 0;
+            }
+        });
+
+        $("#btn_submit").on("click", function(e) {
+            $(".field_penilaian").each(function() {
+                if (this.value === "") {
+                    $("#error_" + $(this).data("id")).html($(this).data("nama") + " Tidak Boleh Kosong");
+                    e.preventDefault();
+                } else if (this.value > 100) {
+                    $("#error_" + $(this).data("id")).html("Maks Nilai 100");
+                    e.preventDefault();
+                } else {
+                    $("#error_" + $(this).data("id")).empty();
+                }
+            });
+        });
+
+    });
+JS;
+$this->registerJs($script);
+?>
+

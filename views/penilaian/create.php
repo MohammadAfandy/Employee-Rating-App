@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Penilaian */
 
-$this->title = 'Create Penilaian';
-$this->params['breadcrumbs'][] = ['label' => 'Penilaians', 'url' => ['index']];
+$this->title = 'Tambah Penilaian';
+$this->params['breadcrumbs'][] = ['label' => 'Penilaian', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="penilaian-create">

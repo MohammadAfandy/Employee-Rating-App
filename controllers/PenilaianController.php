@@ -128,7 +128,6 @@ class PenilaianController extends Controller
         $data_pegawai = [];
 
         $data_penilaian = json_decode($model->penilaian, true);
-        // print_r($data_penilaian);die();
 
         $data_pegawai[$pegawai->id_pegawai] = $pegawai->nip . ' | ' . $pegawai->nama_pegawai;
 
