@@ -98,8 +98,7 @@ class PenilaianController extends Controller
                 $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);                
             }
 
-            if ($model->validate()) {
-                $model->save();
+            if ($model->save()) {
                 return $this->redirect(['index']);
             }
 
@@ -140,8 +139,7 @@ class PenilaianController extends Controller
                 $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);                
             }
             
-            if ($model->validate()) {
-                $model->save();
+            if ($model->save()) {
                 return $this->redirect(['index']);
             }
         }

@@ -13,24 +13,15 @@ $this->title = 'Kriteria';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<style>
-    .nama_kriteria, .bobot_kriteria {
-        border: 0;
-        outline: 0;
-        background: transparent;
-        border-bottom: 2px solid #C0C0C0;
-    }
-    .nama_kriteria:focus, .bobot_kriteria:focus {
-        border-bottom: 2px solid #5cb85c;
-    }
-</style>
 <div class="kriteria-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
         <?php
         Modal::begin([
-            'header' => '<h2>Hello world</h2>',
+            'header' => '<h2>Tambah Kriteria</h2>',
+            'id' => 'modal_tambah',
+            'size' => 'modal-lg',
             'toggleButton' => [
                 'label' => 'Tambah Kriteria',
                 'class' => 'btn btn-success',
@@ -253,6 +244,14 @@ $script = <<< JS
             if (!confirm("Apakah Anda Yakin Ingin Mereset Bobot ?")) {
                 return false;
             }
+        });
+
+        $("#btn_cancel_tambah").on("click", function() {
+            $("#modal_confirm_tambah").modal("hide");
+        });
+
+        $("#btn_ok_tambah").on("click", function() {
+            $("#modal_confirm_tambah").modal("hide");
         });
 
     });
