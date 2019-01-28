@@ -9,7 +9,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-use yii\helpers\ArrayHelper;
 use app\models\Pegawai;
 use app\models\Kriteria;
 

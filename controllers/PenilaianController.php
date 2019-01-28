@@ -93,8 +93,11 @@ class PenilaianController extends Controller
         $post_data = Yii::$app->request->post();
         if (!empty($post_data)) {
             $model->load($post_data);
-            $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);
-            
+
+            if (!empty($post_data['Penilaian']['penilaian'])) {
+                $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);                
+            }
+
             if ($model->validate()) {
                 $model->save();
                 return $this->redirect(['index']);
@@ -120,22 +123,34 @@ class PenilaianController extends Controller
     {
         $model = $this->findModel($id);
 
-        $data_pegawai_exist = $model->find()->select(['id_pegawai'])->column();
-        $pegawais = Pegawai::find()->where(['NOT IN', 'id_pegawai', $data_pegawai_exist])->all();
+        $pegawai = Pegawai::findOne($model->id_pegawai);
         $kriteria = Kriteria::find()->all();
         $data_pegawai = [];
 
-        foreach ($pegawais as $key => $pegawai) {
-            $data_pegawai[$pegawai->id_pegawai] = $pegawai->nip . ' | ' . $pegawai->nama_pegawai;
-        }
+        $data_penilaian = json_decode($model->penilaian, true);
+        // print_r($data_penilaian);die();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_penilaian]);
+        $data_pegawai[$pegawai->id_pegawai] = $pegawai->nip . ' | ' . $pegawai->nama_pegawai;
+
+        $post_data = Yii::$app->request->post();
+
+        if (!empty($post_data)) {
+            $model->load($post_data);
+
+            if (!empty($post_data['Penilaian']['penilaian'])) {
+                $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);                
+            }
+            
+            if ($model->validate()) {
+                $model->save();
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
             'data_pegawai' => $data_pegawai,
+            'data_penilaian' => $data_penilaian,
             'kriteria' => $kriteria,
         ]);
     }

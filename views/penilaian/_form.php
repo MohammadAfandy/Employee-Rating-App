@@ -10,27 +10,49 @@ use yii\bootstrap\ActiveForm;
 
 <div class="penilaian-form">
 
-    <?php $form = ActiveForm::begin([
+    <?php
+    $form = ActiveForm::begin([
         'options' => [
             'enctype' => 'multipart/form-data',
         ],
         'layout' => 'horizontal',
-    ]); ?>
+    ]);
+    ?>
 
-    <?= $form->field($model, 'id_pegawai')->dropDownList($data_pegawai, ['prompt' => '--PILIH-']) ?>
+    <?php
+    if ($model->isNewRecord) {
+        echo $form->field($model, 'id_pegawai')->dropDownList($data_pegawai, [
+            'prompt' => '--PILIH-',
+        ]);
+    } else {
+        echo $form->field($model, 'id_pegawai')->begin();
+            echo Html::activeHiddenInput($model, 'id_pegawai');
+        echo $form->field($model, 'id_pegawai')->end();
+        
+        echo $form->field($model, 'id_pegawai')->dropDownList($data_pegawai, [
+            'disabled' => true,
+        ]);
+    }
+    ?>
 
     <?php foreach ($kriteria as $key => $kri): ?>
         <div class="form-group">
             <label class="control-label col-sm-3"><?= $kri->nama_kriteria; ?></label>
             <div class="col-sm-6">
-                <?= Html::textInput('Penilaian[penilaian][' . $kri->id_kriteria . ']', '', [
-                    'type' => 'number',
-                    'class' => 'form-control',
-                    'max' => 100,
-                    'style' => [
-                        'width' => '100px',
-                    ],
-                ]); ?>
+                <?php
+                echo Html::textInput(
+                    'Penilaian[penilaian][' . $kri->id_kriteria . ']',
+                    $model->isNewRecord ? '' : $data_penilaian[$kri->id_kriteria],
+                    [
+                        'type' => 'number',
+                        'class' => 'form-control',
+                        'max' => 100,
+                        'style' => [
+                            'width' => '100px',
+                        ],
+                    ]
+                );
+                ?>
             </div>
         </div>
 
