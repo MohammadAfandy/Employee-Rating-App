@@ -517,17 +517,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "872a4071093178b8f4d6ad12ed3f91b9969ed8e4"
+                "reference": "0b458e5c79c775ad7baa678248c5ff64e2496f95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/872a4071093178b8f4d6ad12ed3f91b9969ed8e4",
-                "reference": "872a4071093178b8f4d6ad12ed3f91b9969ed8e4",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/0b458e5c79c775ad7baa678248c5ff64e2496f95",
+                "reference": "0b458e5c79c775ad7baa678248c5ff64e2496f95",
                 "shasum": ""
             },
             "require": {
                 "bower-asset/inputmask": "~3.2.2 | ~3.3.5",
-                "bower-asset/jquery": "3.2.*@stable | 3.1.*@stable | 2.2.*@stable | 2.1.*@stable | 1.11.*@stable | 1.12.*@stable",
+                "bower-asset/jquery": "3.3.*@stable | 3.2.*@stable | 3.1.*@stable | 2.2.*@stable | 2.1.*@stable | 1.11.*@stable | 1.12.*@stable",
                 "bower-asset/punycode": "1.3.*",
                 "bower-asset/yii2-pjax": "~2.0.1",
                 "cebe/markdown": "~1.0.0 | ~1.1.0 | ~1.2.0",
@@ -609,7 +609,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2019-01-27T22:12:51+00:00"
+            "time": "2019-01-28T21:36:14+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",

@@ -15,6 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <p>
+        <?= Html::a('Export PDF', ['export-pdf'], ['class' => 'btn btn-success', 'target' => '_blank']); ?>
+    </p>
+
     <?php
     echo $this->render('_penilaian', [
         'penilaian' => $penilaian,

@@ -12,6 +12,8 @@ use yii\filters\VerbFilter;
 use app\models\Pegawai;
 use app\models\Kriteria;
 
+use mPDF;
+
 /**
  * LaporanController 
  */
@@ -23,6 +25,24 @@ class LaporanController extends Controller
      * @return mixed
      */
     public function actionIndex()
+    {
+        $laporan = $this->generateLaporan();
+        return $this->render('index', $laporan);
+    }
+
+    public function actionExportPdf()
+    {
+
+        $laporan = $this->generateLaporan();
+
+        $mpdf = new mPDF();
+        $mpdf->WriteHTML($this->renderPartial('pdf/laporan_pdf', $laporan));
+        $mpdf->Output('ERA_laporan_' . date('Y-m-d-H:i:s') . '.pdf', 'I');
+        exit;
+
+    }
+
+    public function generateLaporan()
     {
         $penilaian = Penilaian::find()->joinWith(['pegawai'])->all();
         $kriteria = Kriteria::find()->all();
@@ -76,8 +96,16 @@ class LaporanController extends Controller
         });
 
         $sort = array_keys($rank);
-       
-        return $this->render('index', get_defined_vars());
+
+        // return $this->render('index', get_defined_vars());
+        return [
+            'penilaian' => $penilaian,
+            'kriteria' => $kriteria,
+            'nilai' => $nilai,
+            'normalisasi' => $normalisasi,
+            'rank' => $rank,
+            'sort' => $sort,
+        ];
     }
     
 }
