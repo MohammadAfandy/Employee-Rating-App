@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Pegawai;
+use app\models\User;
 
 /**
- * PegawaiSearch represents the model behind the search form of `app\models\Pegawai`.
+ * UserSearch represents the model behind the search form of `app\models\User`.
  */
-class PegawaiSearch extends Pegawai
+class UserSearch extends User
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class PegawaiSearch extends Pegawai
     public function rules()
     {
         return [
-            [['id_pegawai'], 'integer'],
-            [['nip', 'nama_pegawai', 'tgl_lahir', 'jk', 'no_hp'], 'safe'],
+            [['id'], 'integer'],
+            [['nip', 'username', 'status'], 'safe'],
         ];
     }
 
@@ -40,15 +40,12 @@ class PegawaiSearch extends Pegawai
      */
     public function search($params)
     {
-        $query = Pegawai::find();
+        $query = User::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
         ]);
 
         $this->load($params);
@@ -61,14 +58,13 @@ class PegawaiSearch extends Pegawai
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_pegawai' => $this->id_pegawai,
-            'tgl_lahir' => $this->tgl_lahir,
+            'id' => $this->id,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'nip', $this->nip])
-            ->andFilterWhere(['like', 'nama_pegawai', $this->nama_pegawai])
-            ->andFilterWhere(['like', 'jk', $this->jk])
-            ->andFilterWhere(['like', 'no_hp', $this->no_hp]);
+            ->andFilterWhere(['like', 'username', $this->username]
+        );
 
         return $dataProvider;
     }

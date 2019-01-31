@@ -69,7 +69,6 @@ class LaporanController extends Controller
 
         $normalisasi = $nilai;
 
-
         foreach ($normalisasi as $key_normalisasi => $norm_value) {
             foreach ($norm_value as $k => $n) {
                 $normalisasi[$key_normalisasi][$k] = round($normalisasi[$key_normalisasi][$k] / $max[$k], 3);
@@ -96,8 +95,7 @@ class LaporanController extends Controller
         });
 
         $sort = array_keys($rank);
-
-        // return $this->render('index', get_defined_vars());
+        
         return [
             'penilaian' => $penilaian,
             'kriteria' => $kriteria,

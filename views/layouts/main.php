@@ -9,6 +9,8 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use mdm\admin\components\MenuHelper;
+use mdm\admin\components\Helper;
 
 AppAsset::register($this);
 ?>
@@ -35,36 +37,82 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
+    $menuItems = [
+        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'Pegawai', 'url' => ['/pegawai/index']],
+        ['label' => 'Kriteria', 'url' => ['/kriteria/index']],
+        ['label' => 'Penilaian', 'url' => ['/penilaian/index']],
+        ['label' => 'Laporan', 'url' => ['/laporan/index']],
+        ['label' => 'User Management', 'url' => ['/admin/']],
+    ];
+
+    $menuItems = Helper::filter($menuItems);
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Pegawai', 'url' => ['/pegawai']],
-            ['label' => 'Kriteria', 'url' => ['/kriteria']],
-            ['label' => 'Penilaian', 'url' => ['/penilaian']],
-            ['label' => 'Laporan', 'url' => ['/laporan']],
-        ],
+        'items' => $menuItems,
     ]);
+
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'navbar-nav navbar-right nav-tab'],
         'items' => [
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
+
+            Yii::$app->user->isGuest
+            ? (['label' => 'Login', 'url' => ['/site/login']])
+            : ([
+                'label' => Yii::$app->user->identity->username,
+                'items' => [
+                    ['label' => 'Setting', 'url' => ['/user/view/', 'id' => Yii::$app->user->id]],
+                    '<li class="divider"></li>',
+                    [
+                        'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                        'url' => ['/site/logout'],
+                        'linkOptions' => ['data-method' => 'post'],
+                    ],
+                ],
+            ])
         ],
     ]);
+
+    // $menuItems = MenuHelper::getAssignedMenu(Yii::$app->user->id);
+        
+    // echo Nav::widget([
+    //     'options' => ['class' => 'navbar-nav navbar-left'],
+    //     'items' => $menuItems,
+    // ]);
+
+    // echo Nav::widget([
+    //     'options' => ['class' => 'navbar-nav navbar-right'],
+    //     'items' => [
+    //         Yii::$app->user->isGuest
+    //         ? (['label' => 'Login', 'url' => ['/site/login']])
+    //         : (
+    //             '<li>'
+    //             . Html::beginForm(['/site/logout'], 'post')
+    //             . Html::submitButton(
+    //                 'Logout (' . Yii::$app->user->identity->username . ')',
+    //                 ['class' => 'btn btn-link logout']
+    //             )
+    //             . Html::endForm()
+    //             . '</li>'
+    //         ),
+    //     ],
+    // ]);
+    // $menuItems = [
+    //     ['label' => 'Home', 'url' => ['/site/index']],
+    //     ['label' => 'Pegawai', 'url' => ['/pegawai/index']],
+    //     ['label' => 'Kriteria', 'url' => ['/kriteria']],
+    //     ['label' => 'Penilaian', 'url' => ['/penilaian']],
+    //     ['label' => 'Laporan', 'url' => ['/laporan']],
+
+    // ];
+
+    // $menuItems = Helper::filter($menuItems);
     NavBar::end();
+
     ?>
 
     <div class="container">

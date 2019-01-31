@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use mdm\admin\components\Helper;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PenilaianSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -15,26 +16,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Tambah Penilaian', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tambah Penilaian',
+            Helper::checkRoute('admin-role') ? ['create'] : '#',
+            [
+                'class' => 'btn btn-success',
+                'disabled' => Helper::checkRoute('admin-role') ? false : true,
+            ]
+        ) ?>
     </p>
-
-    <?php
-    // GridView::widget([
-    //     'dataProvider' => $dataProvider,
-    //     'filterModel' => $searchModel,
-    //     'columns' => [
-    //         ['class' => 'yii\grid\SerialColumn'],
-
-    //         'id_penilaian',
-    //         'id_pegawai',
-    //         'penilaian:ntext',
-    //         'created_date',
-    //         'updated_date',
-
-    //         ['class' => 'yii\grid\ActionColumn'],
-    //     ],
-    // ]); 
-    ?>
 
     <table class="table table-hover table-bordered">
         <thead>
@@ -62,12 +51,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php endforeach; ?>
 
                         <td>
-                            <?= Html::a('Update', ['update', 'id' => $pen->id_penilaian], ['class' => 'btn btn-primary btn-xs']); ?>
-                            <?= Html::a('Delete', ['delete', 'id' => $pen->id_penilaian], [
-                                'class' => 'btn btn-danger btn-xs',
-                                'data-confirm' => 'Apakah Anda Yakin Ingin Menghapus Data ?',
-                                'data-method' => 'post',
-                            ]); ?>
+                            <?= Html::a('Update',
+                                Helper::checkRoute('admin-role') ? ['update', 'id' => $pen->id_penilaian] : '#',
+                                [
+                                    'class' => 'btn btn-primary btn-xs',
+                                    'disabled' => Helper::checkRoute('admin-role') ? false : true,
+                                ]
+                            ); ?>
+                            <?= Html::a('Delete',
+                                Helper::checkRoute('admin-role') ? ['delete', 'id' => $pen->id_penilaian] : '#',
+                                [
+                                    'class' => 'btn btn-danger btn-xs',
+                                    'disabled' => Helper::checkRoute('admin-role') ? false : true,
+                                    'data-confirm' => Helper::checkRoute('admin-role') ? 'Apakah Anda Yakin Ingin Menghapus Data ?' : false,
+                                    'data-method' => Helper::checkRoute('admin-role') ? 'post' : false,
+                                ]
+                            ); ?>
                         </td>
                     </tr>
                 </tbody>

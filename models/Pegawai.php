@@ -16,7 +16,6 @@ use yii\db\Expression;
  * @property string $tgl_lahir
  * @property string $jk
  * @property string $no_hp
- * @property string $email
  * @property string $created_date
  * @property string $updated_date
  */
@@ -37,17 +36,16 @@ class Pegawai extends \yii\db\ActiveRecord
     {
         return [
             [
-                ['nip', 'nama_pegawai', 'tgl_lahir', 'jk', 'no_hp', 'email'],
+                ['nip', 'nama_pegawai', 'tgl_lahir', 'jk', 'no_hp',],
                 'required',
                 'message' => '{attribute} Tidak Boleh Kosong',
             ],
             [['tgl_lahir', 'created_date', 'updated_date', ], 'safe'],
             [['nip'], 'string', 'max' => 10],
-            [['nama_pegawai', 'email'], 'string', 'max' => 100],
+            [['nama_pegawai',], 'string', 'max' => 100],
             [['jk'], 'string', 'max' => 20],
             [['no_hp'], 'string', 'max' => 15],
             [['nip'], 'unique'],
-            ['email', 'email'],
         ];
     }
 
@@ -63,7 +61,6 @@ class Pegawai extends \yii\db\ActiveRecord
             'tgl_lahir' => 'Tanggal Lahir',
             'jk' => 'Jenis Kelamin',
             'no_hp' => 'No Hp',
-            'email' => 'Email',
             'created_date' => 'Created',
             'updated_date' => 'Updated',
         ];

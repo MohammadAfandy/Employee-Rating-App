@@ -4,8 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
-use app\components\Helpers;
-
+use mdm\admin\components\Helper;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PegawaiSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -26,8 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
     ]);
     ?>
 
+
     <p>
-        <?= Html::a('Tambah Pegawai', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tambah Pegawai',
+            [Helper::checkRoute('admin-role') ? 'create' : '#'],
+            [
+                'class' => 'btn btn-success',
+                'disabled' => Helper::checkRoute('admin-role') ? false : true,
+            ]
+        ) ?>
     </p>
 
     <?= GridView::widget([
@@ -40,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'tgl_lahir',
                 'value' => function($model) {
-                    return Helpers::dateIndonesia($model->tgl_lahir);
+                    return app\components\Helpers::dateIndonesia($model->tgl_lahir);
                 },
             ],
             [
@@ -53,7 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Aksi',
-                'template' => '{update} {delete}',
+                // 'template' => '{update} {delete}',
+                'template' => Helper::filterActionColumn('{update} {delete}'),
             ],
         ],
     ]); ?>

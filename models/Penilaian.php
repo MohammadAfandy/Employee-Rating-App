@@ -73,15 +73,4 @@ class Penilaian extends \yii\db\ActiveRecord
         return $this->hasOne(Pegawai::className(), ['id_pegawai'=>'id_pegawai']);
     }
 
-    public static function namaPegawai($id_pegawai)
-    {
-        $nama_pegawai = Pegawai::findOne($id_pegawai);
-        print_r($nama_pegawai);die();
-        if ($nama_pegawai) {
-            return $nama_pegawai;
-        } else {
-            return '';
-        }
-    }
-
 }

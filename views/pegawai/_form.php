@@ -45,8 +45,6 @@ use yii\jui\DatePicker;
     
         <?= $form->field($model, 'no_hp')->textInput(['type' => 'number'], ['maxlength' => true]) ?>
     
-        <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-    
         <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? 'Tambah' : 'Update', ['class' => 'btn btn-success']) ?>
         </div>

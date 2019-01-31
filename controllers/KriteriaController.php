@@ -46,7 +46,6 @@ class KriteriaController extends Controller
         return $this->render('index', [
             'model' => $model,
             'dataProvider' => $dataProvider,
-            'dataProvider' => $dataProvider,
         ]);
     }
 
