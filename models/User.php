@@ -22,6 +22,7 @@ use app\models\Pegawai;
 class User extends \mdm\admin\models\User implements IdentityInterface
 {
     const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
     const SCENARIO_CHANGE_PASSWORD = 'change_password';
 
     public $password_old;
@@ -42,6 +43,7 @@ class User extends \mdm\admin\models\User implements IdentityInterface
     {
         return [
             [['username', 'nip', 'password_hash', 'password_confirm', 'email'], 'required', 'on' => self::SCENARIO_CREATE,],
+            [['username', 'nip', 'email', 'status'], 'required', 'on' => self::SCENARIO_UPDATE,],
             [['password_old', 'password_confirm', 'password_new',], 'required', 'on' => self::SCENARIO_CHANGE_PASSWORD,],
             [['password_confirm'], 'compare', 'compareAttribute' => 'password_hash', 'on' => self::SCENARIO_CREATE,],
             [['password_confirm'], 'compare', 'compareAttribute' => 'password_new', 'on' => self::SCENARIO_CHANGE_PASSWORD,],
@@ -49,8 +51,8 @@ class User extends \mdm\admin\models\User implements IdentityInterface
             [['email'], 'email'],
             [['status'], 'in', 'range' => [UserStatus::ACTIVE, UserStatus::INACTIVE]],
             [['nip'], 'string', 'max' => 10],
-            [['nip'], 'exist', 'targetClass' => Pegawai::class, 'targetAttribute' => ['nip' => 'nip'], 'on' => self::SCENARIO_CREATE, 'message' => 'NIP Not Found in Pegawai'],
-            [['nip', 'username', 'email'], 'unique'],
+            [['nip'], 'exist', 'targetClass' => Pegawai::class, 'targetAttribute' => ['nip' => 'nip'], 'on' => [self::SCENARIO_CREATE, self::SCENARIO_UPDATE], 'message' => 'NIP Not Found in Pegawai'],
+            [['nip', 'username', 'email'], 'unique', 'on' => self::SCENARIO_CREATE],
             [['username'], 'string', 'max' => 100],
             [['password_hash', 'password_confirm', 'password_new', 'password_old'], 'string', 'max' => 255, 'min' => 6],
         ];

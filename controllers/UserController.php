@@ -110,15 +110,33 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        // print_r( Yii::$app->user->identity);die();
+        $data_nip_exist = User::find()->select(['nip'])->column();
+
+        $data = Pegawai::find()
+            ->select('nip')
+            ->where(['NOT IN', 'nip', $data_nip_exist])
+            ->asArray()
+            ->all();
+
+        $data_nip_available = [];
+
+        foreach ($data as $key => $value) {
+            $data_nip_available[] = $value['nip']; 
+        }
+
         $model = $this->findModel($id);
+        $model->scenario = User::SCENARIO_UPDATE;
+
+
+        $data_nip_available[] = $model->nip;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'data_nip_available' => $data_nip_available,
         ]);
     }
 

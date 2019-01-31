@@ -6,6 +6,8 @@ use app\models\User;
 
 use yii\jui\AutoComplete;
 
+use mdm\admin\components\UserStatus;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 /* @var $form yii\widgets\ActiveForm */
@@ -41,6 +43,26 @@ use yii\jui\AutoComplete;
             <?= $form->field($model, 'password_confirm')->passwordInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'email')->input('email') ?>
+
+        <?php elseif ($model->scenario === User::SCENARIO_UPDATE): ?>
+
+            <?= $form->field($model, 'nip')->widget(AutoComplete::classname(), [
+                'clientOptions' => [
+                    'source' => $data_nip_available,
+                ],
+                'options' => [
+                    'class' => 'form-control',
+                ],
+            ]) ?>
+
+            <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+
+            <?= $form->field($model, 'email')->input('email') ?>
+
+            <?= $form->field($model, 'status')->dropDownList([
+                UserStatus::ACTIVE => 'ACTIVE',
+                UserStatus::INACTIVE => 'NON ACTIVE',
+            ], ['prompt' => '--PILIH-']) ?>
 
         <?php elseif ($model->scenario === User::SCENARIO_CHANGE_PASSWORD): ?>
 

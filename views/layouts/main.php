@@ -44,7 +44,7 @@ AppAsset::register($this);
         ['label' => 'Kriteria', 'url' => ['/kriteria/index']],
         ['label' => 'Penilaian', 'url' => ['/penilaian/index']],
         ['label' => 'Laporan', 'url' => ['/laporan/index']],
-        ['label' => 'User Management', 'url' => ['/admin/']],
+        ['label' => 'User Management', 'url' => ['/admin/assignment/index']],
     ];
 
     $menuItems = Helper::filter($menuItems);

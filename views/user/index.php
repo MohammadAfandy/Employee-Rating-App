@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use mdm\admin\components\UserStatus;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -29,7 +30,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'nip',
             'username',
             'email',
-            'status',
+            [
+                'attribute' => 'status',
+                'filter' => [
+                    UserStatus::ACTIVE => 'ACTIVE',
+                    UserStatus::INACTIVE => 'NON ACTIVE',
+                ],
+                'value' => function($model) {
+                    return $model->status === app\models\User::STATUS_ACTIVE ? 'ACTIVE' : 'NON ACTIVE';
+                },
+            ],
             //'auth_key',
             //'password_reset_token',
 

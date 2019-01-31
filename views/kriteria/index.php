@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 use yii\bootstrap\Modal;
+use mdm\admin\components\Helper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\KriteriaSearch */
@@ -16,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="kriteria-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+
     <p>
         <?php
         Modal::begin([
@@ -25,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'toggleButton' => [
                 'label' => 'Tambah Kriteria',
                 'class' => 'btn btn-success',
+                'disabled' => Helper::checkRoute('admin-role') ? false : true,
             ],
         ]);
 
@@ -123,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'header' => 'Aksi',
-                    'template' => '{delete}',
+                    'template' => Helper::filterActionColumn('{delete}'),
                 ],
             ],
         ]);
