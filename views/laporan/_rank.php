@@ -20,8 +20,8 @@
                     
                     <tbody>
                         <tr>
-                            <td><?= $pen->pegawai->nama_pegawai ?></td>
-                            <td><?= $rank[$pen->id_penilaian]; ?> </td>
+                            <td><?= $pen['pegawai']['nama_pegawai']; ?></td>
+                            <td><?= $rank[$pen['id_penilaian']]; ?> </td>
                             <td><?= $key + 1 ?></td>
                         </tr>
                     </tbody>

@@ -106,7 +106,7 @@ class KriteriaController extends Controller
         $post_data = Yii::$app->request->post();
 
         if (!empty($post_data['Kriteria'])) {
-
+            
             foreach ($post_data['Kriteria'] as $key => $post) {
                 $model = $this->findModel($key);
                 $model->attributes = $post;

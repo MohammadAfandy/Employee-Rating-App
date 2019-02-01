@@ -13,6 +13,8 @@ use Yii;
  */
 class Kriteria extends \yii\db\ActiveRecord
 {
+    const COST = 0;
+    const BENEFIT = 1;
     /**
      * {@inheritdoc}
      */
@@ -27,7 +29,7 @@ class Kriteria extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama_kriteria'], 'required'],
+            [['nama_kriteria', 'type'], 'required'],
             [['nama_kriteria'], 'unique'],
             [['bobot'], 'number'],
             [['nama_kriteria'], 'string', 'max' => 100],
@@ -42,21 +44,9 @@ class Kriteria extends \yii\db\ActiveRecord
         return [
             'id_kriteria' => 'Id Kriteria',
             'nama_kriteria' => 'Nama Kriteria',
+            'type' => 'Type',
             'bobot' => 'Bobot',
         ];
     }
-
-    /**
-     * @inheritdoc
-     */
-    // public function beforeSave($insert)
-    // {
-    //     if (parent::beforeSave($insert)) {
-    //         $this->
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
 
 }

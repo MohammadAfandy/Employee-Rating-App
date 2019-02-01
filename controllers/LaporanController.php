@@ -44,44 +44,49 @@ class LaporanController extends Controller
 
     public function generateLaporan()
     {
-        $penilaian = Penilaian::find()->joinWith(['pegawai'])->all();
-        $kriteria = Kriteria::find()->all();
+        $penilaian = Penilaian::find()->joinWith(['pegawai'])->indexBy('id_penilaian')->asArray()->all();
+        $kriteria = Kriteria::find()->indexBy('id_kriteria')->asArray()->all();
 
         $nilai = [];
-        $max = [];
+        $min_max = [];
 
         foreach ($penilaian as $key => $pen) {
-            $nilai[$pen->id_penilaian] = json_decode($pen->penilaian, true);
+            $nilai[$key] = json_decode($pen['penilaian'], true);
 
             foreach ($nilai as $nil) {
                 foreach ($nil as $k => $v) {
-                    $max[$k] = [];
+                    $min_max[$k] = [];
                 }
             }
         }
 
-        foreach ($max as $key_max => $m) {
+        foreach ($min_max as $key_min_max => $m) {
+            
             foreach ($nilai as $k => $v) {
-                $max[$key_max][] = $nilai[$k][$key_max];
+                $min_max[$key_min_max][] = $nilai[$k][$key_min_max];
             }
-            $max[$key_max] = max($max[$key_max]);
+
+            $min_max[$key_min_max] = ($kriteria[$key_min_max]['type'] == Kriteria::COST)
+                ? min($min_max[$key_min_max])
+                : max($min_max[$key_min_max]);
+
         }
 
         $normalisasi = $nilai;
 
         foreach ($normalisasi as $key_normalisasi => $norm_value) {
             foreach ($norm_value as $k => $n) {
-                $normalisasi[$key_normalisasi][$k] = round($normalisasi[$key_normalisasi][$k] / $max[$k], 3);
+                $normalisasi[$key_normalisasi][$k] = ($kriteria[$k]['type'] == Kriteria::COST)
+                    ? round($min_max[$k] / $normalisasi[$key_normalisasi][$k], 3)
+                    : round($normalisasi[$key_normalisasi][$k] / $min_max[$k], 3);
             }
         }
 
         $rank = $normalisasi;
 
         foreach ($rank as $key_rank => $rank_value) {
-            $i = 0;
             foreach ($rank_value as $k => $r) {
-                $rank[$key_rank][$k] = $rank[$key_rank][$k] * $kriteria[$i]->bobot;
-                $i++;
+                $rank[$key_rank][$k] = $rank[$key_rank][$k] * $kriteria[$k]['bobot'];
             }
             
             $rank[$key_rank] = array_sum($rank[$key_rank]);
@@ -93,6 +98,7 @@ class LaporanController extends Controller
             }
             return ($a > $b) ? -1 : 1;
         });
+
 
         $sort = array_keys($rank);
         

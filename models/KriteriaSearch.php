@@ -18,7 +18,7 @@ class KriteriaSearch extends Kriteria
     {
         return [
             [['id_kriteria'], 'integer'],
-            [['nama_kriteria'], 'safe'],
+            [['nama_kriteria', 'type'], 'safe'],
             [['bobot'], 'number'],
         ];
     }
@@ -60,6 +60,7 @@ class KriteriaSearch extends Kriteria
         // grid filtering conditions
         $query->andFilterWhere([
             'id_kriteria' => $this->id_kriteria,
+            'type' => $this->type,
             'bobot' => $this->bobot,
         ]);
 

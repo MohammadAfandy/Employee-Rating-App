@@ -7,27 +7,26 @@
                 <th>Nama Pegawai</th>
                 
                 <?php foreach ($kriteria as $kri): ?>
-                    <th><?= $kri->nama_kriteria ?></th>
+                    <th><?= $kri['nama_kriteria'] ?></th>
                 <?php endforeach; ?>
     
             </thead>
                 
             <?php if (!empty($penilaian) && is_array($penilaian)): ?>
-                
+                <?php $no = 1; ?>
                 <?php foreach($penilaian as $key => $pen): ?>
-                    
                     <tbody>
                         <tr>
-                            <td><?= ($key + 1) ?></td>
-                            <td><?= $pen->pegawai->nama_pegawai; ?></td>
+                            <td><?= $no ?></td>
+                            <td><?= $pen['pegawai']['nama_pegawai']; ?></td>
                             
                             <?php foreach ($kriteria as $kri): ?>
-                                <td><?= $normalisasi[$pen->id_penilaian][$kri->id_kriteria]; ?></td>
+                                <td><?= $normalisasi[$pen['id_penilaian']][$kri['id_kriteria']]; ?></td>
                             <?php endforeach; ?>
-    
+                            <?php $no++; ?>
                         </tr>
                     </tbody>
-                
+                    
                 <?php endforeach; ?>
             
             <?php else: ?>

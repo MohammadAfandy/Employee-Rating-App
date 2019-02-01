@@ -22,12 +22,12 @@
     margin-bottom: 20px !important;
 }
 
-.nama_kriteria, .bobot_kriteria {
+.nama_kriteria, .bobot_kriteria{
     border: 0;
     outline: 0;
     background: transparent;
     border-bottom: 2px solid #C0C0C0;
 }
-.nama_kriteria:focus, .bobot_kriteria:focus {
+.nama_kriteria:focus, .bobot_kriteria:focus, {
     border-bottom: 2px solid #5cb85c;
 }

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use app\models\Kriteria;
 use yii\bootstrap\Modal;
 use mdm\admin\components\Helper;
 
@@ -89,6 +90,49 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                 ],
                 [
+                    'header' => 'Type Kriteria' . '<span class="pull-right">' . 
+                        Html::button('Edit All', [
+                            'class' => 'btn btn-success btn-xs',
+                            'id' => 'btn_edit_all_type',
+                        ]) . ' ' .
+                        Html::button('Cancel All', [
+                            'class' => 'btn btn-danger btn-xs',
+                            'id' => 'btn_cancel_all_type',
+                        ])
+                    ,
+                    'attribute' => 'type',
+                    'value' => function($model) use (&$tabindex) {
+                        $type = Html::dropDownList('Kriteria[' .$model->id_kriteria. '][type]',
+                            $model->type,
+                            [
+                                Kriteria::COST => 'COST',
+                                Kriteria::BENEFIT => 'BENEFIT',
+                            ],
+                            [
+                                'class' => 'type_kriteria',
+                                'disabled' => 'disabled',
+                                'tabindex' => $tabindex,
+                                'data-id' => $model->id_kriteria,
+                                'data-oldval' => $model->type,
+                            ]
+                        );
+                        $edit = Html::button('Edit', [
+                            'class' => 'btn btn-success btn-xs btn_edit_type',
+                            'data-id' => $model->id_kriteria,
+                        ]);
+                        $cancel = Html::button('X', [
+                            'class' => 'btn btn-danger btn-xs btn_cancel_type',
+                            'data-id' => $model->id_kriteria,
+                        ]);
+                        $tabindex++;
+                        return $type . '<span class="pull-right">' . $edit . ' '. $cancel;
+                    },
+                    'format' => 'raw',
+                    // 'value' => function($model) {
+                    //     return $model->type = Kriteria::COST ? 'COST' : 'BENEFIT';
+                    // },
+                ],
+                [
                     'header' => 'Bobot' . '<span class="pull-right">' . 
                         Html::button('Edit All', [
                             'class' => 'btn btn-success btn-xs',
@@ -155,6 +199,20 @@ $script = <<< JS
             input.attr("disabled", true).css("border-bottom", "2px solid #C0C0C0").val(input.data("oldval"));
         });
 
+        $(document).on("click", ".btn_edit_type", function() {
+            let id = $(this).data("id");
+            let input = $(".type_kriteria[data-id="+id+"]");
+
+            input.removeAttr("disabled").css("border-bottom", "2px solid #5cb85c").focus();
+        });
+
+        $(document).on("click", ".btn_cancel_type", function() {
+            let id = $(this).data("id");
+            let input = $(".type_kriteria[data-id="+id+"]");
+
+            input.attr("disabled", true).css("border-bottom", "2px solid #C0C0C0").val(input.data("oldval"));
+        });
+
         $(document).on("click", ".btn_edit_bobot", function() {
             let id = $(this).data("id");
             let input = $(".bobot_kriteria[data-id="+id+"]");
@@ -177,6 +235,18 @@ $script = <<< JS
 
         $("#btn_cancel_all_nama").on("click", function() {
             $(".nama_kriteria").each(function() {
+                $(this).attr("disabled", true).css("border-bottom", "2px solid #C0C0C0").val($(this).data("oldval"));
+            });
+        });
+
+        $("#btn_edit_all_type").on("click", function() {
+            $(".type_kriteria").each(function() {
+                $(this).removeAttr("disabled").css("border-bottom", "2px solid #5cb85c");
+            });
+        });
+
+        $("#btn_cancel_all_type").on("click", function() {
+            $(".type_kriteria").each(function() {
                 $(this).attr("disabled", true).css("border-bottom", "2px solid #C0C0C0").val($(this).data("oldval"));
             });
         });

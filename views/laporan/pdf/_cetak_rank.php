@@ -21,8 +21,8 @@
 
             <tbody>
                 <tr>
-                    <td><?= $pen->pegawai->nama_pegawai ?></td>
-                    <td class="col-number"><?= $rank[$pen->id_penilaian]; ?> </td>
+                    <td><?= $pen['pegawai']['nama_pegawai']; ?></td>
+                    <td><?= $rank[$pen['id_penilaian']]; ?> </td>
                     <td class="col-number"><?= $key + 1 ?></td>
                 </tr>
             </tbody>
